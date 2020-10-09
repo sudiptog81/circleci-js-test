@@ -1,9 +1,22 @@
-version: 2
+version: 2.1
+
+orbs:
+  node: circleci/node@lts
+
 jobs:
   build:
-    docker:
-      - image: cimg/node:lts
+    executor:
+      name: node/default
     steps:
       - checkout
-      - run: yarn install
-      - run: yarn test
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: test
+          command: yarn run test
+
+workflows:
+  build:
+    jobs:
+      - test
+        
